@@ -1,0 +1,32 @@
+<idea-plugin version="2">
+    <id>com.thangiee.cleanandroid</id>
+    <name>Clean Android Plugin</name>
+    <version>0.1.0</version>
+    <vendor email="thangiee12@gmail.com">thangiee12@gmail.com</vendor>
+    <vendor url="http://www.jetbrains.com">Thang Le</vendor>
+
+    <description>
+        Enable proper Intellij highlighting for Clean Android macros.
+    </description>
+
+    <idea-version since-build="143.0"/>
+
+    <depends>org.intellij.scala</depends>
+
+    <application-components>
+        <!-- TODO put your components here -->
+    </application-components>
+
+    <project-components>
+        <!-- TODO put your components here -->
+    </project-components>
+
+    <extensions defaultExtensionNs="org.intellij.scala">
+        <syntheticMemberInjector implementation="com.thangiee.cleanandroid.injector.CaseInjector"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- TODO put your extensions here -->
+    </extensions>
+
+</idea-plugin>
