@@ -22,6 +22,12 @@ lazy val core = project
     ),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )
+  .settings(
+    publishMavenStyle := true,
+    bintrayReleaseOnPublish in ThisBuild := false, //  1."sbt core/publish" stage artifacts first 2."sbt core/bintrayRelease" make artifacts public
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    bintrayVcsUrl := Some("https://github.com/Thangiee/Metadroid")
+  )
 
 val pluginVer = "0.1.0"
 val pluginName = "metadroid-plugin"

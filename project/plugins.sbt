@@ -8,3 +8,5 @@ resolvers += Resolver.url("dancingrobot84-bintray",
 addSbtPlugin("com.dancingrobot84" % "sbt-idea-plugin" % "0.4.0")
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
+
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
