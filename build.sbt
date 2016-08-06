@@ -11,7 +11,7 @@ lazy val commonSettings = Seq(
 lazy val core = project
   .settings(commonSettings ++ androidBuildAar)
   .settings(
-    name := "Clean Android",
+    name := "metadroid",
     minSdkVersion := "4",
     platformTarget := "android-24",
     typedResources := false,
@@ -27,7 +27,7 @@ lazy val plugin: Project = project
     .enablePlugins(SbtIdeaPlugin)
     .settings(commonSettings)
     .settings(
-      name := "clean-android-plugin",
+      name := "metadroid-plugin",
       assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
       ideaInternalPlugins := Seq(),
       ideaExternalPlugins := Seq(IdeaPlugin.Zip("scala-plugin", url("https://plugins.jetbrains.com/plugin/download?pr=idea&updateId=27109"))),
@@ -51,7 +51,7 @@ lazy val packagePlugin = TaskKey[File]("package-plugin", "Create plugin's zip fi
 packagePlugin in plugin <<= (assembly in plugin,
   target in plugin,
   ivyPaths) map { (ideaJar, target, paths) =>
-  val pluginName = "clean-android-plugin"
+  val pluginName = "metadroid-plugin"
   val ivyLocal = paths.ivyHome.getOrElse(file(System.getProperty("user.home")) / ".ivy2") / "local"
   val sources = Seq(
     ideaJar -> s"$pluginName/lib/${ideaJar.getName}"

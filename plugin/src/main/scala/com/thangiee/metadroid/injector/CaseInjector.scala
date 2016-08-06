@@ -1,4 +1,4 @@
-package com.thangiee.cleanandroid.injector
+package com.thangiee.metadroid.injector
 
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.{ScObject, ScTypeDefinition}
 import org.jetbrains.plugins.scala.lang.psi.impl.toplevel.typedef.{ScClassImpl, SyntheticMembersInjector}
@@ -10,7 +10,7 @@ class CaseInjector extends SyntheticMembersInjector {
     source match {
       case obj: ScObject =>
         obj.fakeCompanionClassOrCompanionClass match {
-          case clazz: ScClassImpl if clazz.findAnnotationNoAliases("com.thangiee.cleanandroid.Case") != null =>
+          case clazz: ScClassImpl if clazz.findAnnotationNoAliases("com.thangiee.metadroid.Case") != null =>
             val params = clazz.parameters.map(param => s"${param.name}: ${param.getRealParameterType().getOrAny.toString()}").mkString(", ")
             Seq(s"def apply($params)(implicit ctx: android.content.Context): android.content.Intent = ???")
           case _ => Seq.empty
@@ -20,7 +20,7 @@ class CaseInjector extends SyntheticMembersInjector {
   }
 
   override def needsCompanionObject(source: ScTypeDefinition): Boolean = {
-    source.findAnnotationNoAliases("com.thangiee.cleanandroid.Case") != null
+    source.findAnnotationNoAliases("com.thangiee.metadroid.Case") != null
   }
 
 }

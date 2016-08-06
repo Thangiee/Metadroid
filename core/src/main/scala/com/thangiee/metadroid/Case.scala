@@ -1,4 +1,4 @@
-package com.thangiee.cleanandroid
+package com.thangiee.metadroid
 
 import scala.annotation.StaticAnnotation
 import scala.language.experimental.macros
