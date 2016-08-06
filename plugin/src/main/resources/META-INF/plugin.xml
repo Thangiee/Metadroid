@@ -2,14 +2,15 @@
     <id>com.thangiee.metadroid</id>
     <name>Metadroid Plugin</name>
     <version>0.1.0</version>
-    <vendor email="thangiee12@gmail.com">thangiee12@gmail.com</vendor>
-    <vendor url="http://www.jetbrains.com">Thang Le</vendor>
+    <vendor url="https://github.com/Thangiee/Metadroid" email="thangiee12@gmail.com">Thang Le</vendor>
 
     <description>
         Enable proper Intellij highlighting for Metadroid macros.
     </description>
 
     <idea-version since-build="143.0"/>
+
+    <change-notes>Initial release of the plugin.</change-notes>
 
     <depends>org.intellij.scala</depends>
 

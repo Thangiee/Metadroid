@@ -9,7 +9,6 @@ project/boot/
 *.ap_
 *.dex
 *.class
-bin/
 gen/
 out/
 .gradle/
