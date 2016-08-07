@@ -14,6 +14,7 @@ lazy val core = project
     version := "0.1.0",
     minSdkVersion := "4",
     platformTarget := "android-24",
+    javacOptions in Compile ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil,
     typedResources := false,
     libraryDependencies ++= Seq(
       "com.google.android" % "android" % "4.1.1.4" % "provided",
