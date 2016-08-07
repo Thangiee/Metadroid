@@ -11,7 +11,12 @@ class CaseInjector extends SyntheticMembersInjector {
       case obj: ScObject =>
         obj.fakeCompanionClassOrCompanionClass match {
           case clazz: ScClassImpl if clazz.findAnnotationNoAliases("com.thangiee.metadroid.Case") != null =>
-            val params = clazz.parameters.map(param => s"${param.name}: ${param.getRealParameterType().getOrAny.toString()}").mkString(", ")
+            val params = clazz.parameters.map { p =>
+              val lhs = s"${p.name}: ${p.typeElement.fold("Any")(_.getText)}"
+              if (p.isDefaultParam) lhs + " = " + p.getDefaultExpression.fold("{}")(_.getText)
+              else if (p.isRepeatedParameter) lhs + "*"
+              else lhs
+            }.mkString(", ")
             Seq(s"def apply($params)(implicit ctx: android.content.Context): android.content.Intent = ???")
           case _ => Seq.empty
         }
