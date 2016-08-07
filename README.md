@@ -89,7 +89,7 @@ marked as an error although it will still compile successfully. To fix this, ins
 2) Go to settings, Plugins section, then click on install plugin from disc, and choose this plugin. 
 
 ### Todo
-* Currently, if a companion object already exist, the `@Case` macro won't work. Macro needs to 
-combine existing with generated into one companion object.
+* Currently, if a companion object already exists, the `@Case` macro won't work. Macro needs to 
+combine the existing companion object with the generated companion object.
 
 * Support fragment 
