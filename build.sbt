@@ -18,7 +18,9 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "com.google.android" % "android" % "4.1.1.4" % "provided",
       "org.scala-lang" % "scala-reflect" % "2.11.8",
-      "me.chrons" %% "boopickle" % "1.2.4"
+      "me.chrons" %% "boopickle" % "1.2.4",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.4.0" % "provided",
+      "ch.qos.logback" % "logback-classic" % "1.1.7" % "provided"
     ),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )

@@ -1,5 +1,7 @@
 package com.thangiee.metadroid
 
+import com.typesafe.scalalogging.LazyLogging
+
 import scala.annotation.StaticAnnotation
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
@@ -8,7 +10,7 @@ class Case extends StaticAnnotation {
   def macroTransform(annottees: Any*) = macro CaseImpl.impl
 }
 
-object CaseImpl {
+object CaseImpl extends LazyLogging {
   val namespace = "com.thangiee.metadroid."
 
   def impl(c: blackbox.Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
@@ -49,7 +51,7 @@ object CaseImpl {
               }
             }
           """
-          println(out)
+          logger.debug(out.toString())
           out
 
         case other => c.abort(c.enclosingPosition, showRaw(other))
