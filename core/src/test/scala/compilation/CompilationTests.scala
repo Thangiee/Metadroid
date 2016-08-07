@@ -5,10 +5,10 @@ import com.thangiee.metadroid.Case
 
 @Case class NoParamTest() extends Activity
 
-@Case class OneParamTest(name: String = "hello") extends Activity
+@Case class OneParamTest(name: String = "Alice") extends Activity
 
 case class Person(name: String, age: Int)
-@Case class ManyParamsTest(s: String, person: Person) extends Activity
+@Case class ManyParamsTest(s: Seq[String], people: Person*) extends Activity
 
 @Case class SupportCompanionObjTest(a: String) extends Activity
 object SupportCompanionObjTest {

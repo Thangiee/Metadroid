@@ -16,14 +16,21 @@ object CaseImpl extends LazyLogging {
   def impl(c: blackbox.Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
 
-    val deserializeParams: Seq[ValDef] => Seq[ValDef] = _ map { case ValDef(_, name, typ, _) =>
+    // covert type A* -> Seq[A]
+    val convertRepeatedIntoSeq: ValDef => ValDef = {
+      case ValDef(mod, termName, AppliedTypeTree(Select(_, TypeName("<repeated>")), typeName), rhs) =>
+        ValDef(mod, termName, AppliedTypeTree(Ident(TypeName("Seq")), typeName), rhs)
+      case good => good // not a type A*, don't need to do anything
+    }
+
+    // Unpickle[A*] is a syntax error, convert to Unpickle[Seq[A]] if need be
+    val deserializeParam: ValDef => ValDef = convertRepeatedIntoSeq andThen { case ValDef(_, name, typ, _) =>
       val rhs = q"Unpickle[$typ].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra(${namespace+name.toString})))"
       ValDef(Modifiers(Flag.LAZY), name, typ, rhs)
     }
 
-    val serializeParams: Seq[ValDef] => Seq[Tree] = _ map(param =>
-      q"intent.putExtra(${namespace+param.name.toString}, Pickle.intoBytes(${param.name}).array())"
-    )
+    val serializeParam: ValDef => Tree = param =>
+      q"intent.putExtra(${namespace + param.name.toString}, Pickle.intoBytes(${param.name}).array())"
 
     val trees = annottees.map(_.tree).toList
 
@@ -40,7 +47,7 @@ object CaseImpl extends LazyLogging {
           q"""
             $mods class $tpname[..$tparams] $ctorMods() extends $parent with ..$parents { $self =>
               import boopickle.Default._
-              ..${deserializeParams(classParams) ++ stats}
+              ..${classParams.map(deserializeParam) ++ stats}
             }
           """
 
@@ -52,7 +59,7 @@ object CaseImpl extends LazyLogging {
                 def apply(...$paramss)(implicit ctx: android.content.Context): android.content.Intent = {
                   import boopickle.Default._
                   val intent = new android.content.Intent(ctx, classOf[$tpname])
-                  ..${serializeParams(classParams)}
+                  ..${classParams.map(serializeParam)}
                   intent
                 }
               }
@@ -63,7 +70,7 @@ object CaseImpl extends LazyLogging {
                 def apply(...$paramss)(implicit ctx: android.content.Context): android.content.Intent = {
                   import boopickle.Default._
                   val intent = new android.content.Intent(ctx, classOf[$tpname])
-                  ..${serializeParams(classParams)}
+                  ..${classParams.map(serializeParam)}
                   intent
                 }
               }
