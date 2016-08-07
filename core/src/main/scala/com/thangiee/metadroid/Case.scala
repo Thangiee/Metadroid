@@ -9,6 +9,8 @@ class Case extends StaticAnnotation {
 }
 
 object CaseImpl {
+  val namespace = "com.thangiee.metadroid."
+
   def impl(c: blackbox.Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
 
@@ -19,11 +21,11 @@ object CaseImpl {
           val classParams: Seq[ValDef] = paramss.flatten
 
           val serializeParams = classParams.map(param =>
-            q"intent.putExtra(${param.name.toString}, Pickle.intoBytes(${param.name}).array())"
+            q"intent.putExtra(${namespace+param.name.toString}, Pickle.intoBytes(${param.name}).array())"
           )
 
           val deserializeParams = classParams.map { case ValDef(_, name, typ, _) =>
-            val rhs = q"Unpickle[$typ].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra(${name.toString})))"
+            val rhs = q"Unpickle[$typ].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra(${namespace+name.toString})))"
             ValDef(Modifiers(Flag.LAZY), name, typ, rhs)
           }
 
@@ -32,7 +34,7 @@ object CaseImpl {
             case other => c.abort(c.enclosingPosition, s"Fail to extract class name: ${showRaw(other)}")
           }
 
-          q"""
+          val out = q"""
             class $tpname[..$tparams] $ctorMods() extends $parent with ..$parents { $self =>
               import boopickle.Default._
               ..${deserializeParams ++ stats}
@@ -47,6 +49,8 @@ object CaseImpl {
               }
             }
           """
+          println(out)
+          out
 
         case other => c.abort(c.enclosingPosition, showRaw(other))
       }
