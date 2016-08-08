@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.thangiee.metadroid</id>
     <name>Metadroid Plugin</name>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <vendor url="https://github.com/Thangiee/Metadroid" email="thangiee12@gmail.com">Thang Le</vendor>
 
     <description>
