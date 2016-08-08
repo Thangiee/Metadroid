@@ -26,7 +26,11 @@ object CaseImpl extends LazyLogging {
     // Unpickle[A*] is a syntax error, convert to Unpickle[Seq[A]] if need be
     val deserializeParam: ValDef => ValDef = convertRepeatedIntoSeq andThen { case ValDef(_, name, typ, _) =>
       val rhs = q"Unpickle[$typ].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra(${namespace+name.toString})))"
-      ValDef(Modifiers(Flag.LAZY), name, typ, rhs)
+      typ match {
+        case AppliedTypeTree(Ident(TypeName("Option")), _) =>
+          ValDef(Modifiers(Flag.LAZY), name, typ, q"scala.util.Try(..$rhs).recover{case _ => None}.toOption.flatten")
+        case _ => ValDef(Modifiers(Flag.LAZY), name, typ, rhs)
+      }
     }
 
     val serializeParam: ValDef => Tree = param =>

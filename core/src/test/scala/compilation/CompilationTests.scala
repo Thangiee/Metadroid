@@ -16,3 +16,5 @@ object SupportCompanionObjTest {
   def bar(i: Int) = 0
   def apply(b: String): SupportCompanionObjTest = ???
 }
+
+@Case class OptionalParamTest(opt: Option[Int]) extends Activity
