@@ -10,7 +10,10 @@
 
     <idea-version since-build="143.0"/>
 
-    <change-notes>Initial release of the plugin.</change-notes>
+    <change-notes>
+        0.1.1
+        * Show default and repeated parameter in completion
+    </change-notes>
 
     <depends>org.intellij.scala</depends>
 

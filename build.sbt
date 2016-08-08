@@ -11,7 +11,7 @@ lazy val core = project
   .settings(commonSettings ++ androidBuildAar)
   .settings(
     name := "metadroid",
-    version := "0.1.0",
+    version := "0.1.1",
     minSdkVersion := "4",
     platformTarget := "android-24",
     javacOptions in Compile ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil,
@@ -32,7 +32,7 @@ lazy val core = project
     bintrayVcsUrl := Some("https://github.com/Thangiee/Metadroid")
   )
 
-val pluginVer = "0.1.0"
+val pluginVer = "0.1.1"
 val pluginName = "metadroid-plugin"
 lazy val plugin: Project = project
     .enablePlugins(SbtIdeaPlugin)

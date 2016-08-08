@@ -5,7 +5,7 @@ Remove boilerplate code for Android with Scala macros.
 Add the following to your build.sbt: 
 ```scala
 resolvers += Resolver.jcenterRepo
-libraryDependencies += "com.thangiee" %% "metadroid" % "0.1.0"
+libraryDependencies += "com.thangiee" %% "metadroid" % "0.1.1"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
 
@@ -31,8 +31,8 @@ During compile time, `ExampleAct` is expanded to something similar to:
 ```scala
 class ExampleAct extends Activity {
   import boopickle.Default._
-  lazy val s: String = Unpickle[String].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra("s")))
-  lazy val person: Person = Unpickle[Person].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra("person")))
+  lazy val s: String = Unpickle[String].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra("com.thangiee.metadroid.s")))
+  lazy val person: Person = Unpickle[Person].fromBytes(java.nio.ByteBuffer.wrap(getIntent.getByteArrayExtra("com.thangiee.metadroid.person")))
   ...
 }
 
@@ -40,8 +40,8 @@ object ExampleAct {
   def apply(s: String, person: Person)(implicit ctx: android.content.Context): android.content.Intent = {
     import boopickle.Default._
     val intent = new android.content.Intent(ctx, classOf[ExampleAct])
-    intent.putExtra("s", Pickle.intoBytes(s).array())
-    intent.putExtra("person", Pickle.intoBytes(person).array())
+    intent.putExtra("com.thangiee.metadroid.s", Pickle.intoBytes(s).array())
+    intent.putExtra("com.thangiee.metadroid.person", Pickle.intoBytes(person).array())
     intent
   }
 }
@@ -88,8 +88,10 @@ marked as an error although it will still compile successfully. To fix this, ins
 
 2) Go to settings, Plugins section, then click on install plugin from disc, and choose this plugin. 
 
-### Todo
-* Currently, if a companion object already exists, the `@Case` macro won't work. Macro needs to 
-combine the existing companion object with the generated companion object.
+### Potential Pitfalls
 
+* If an activity can be started with its empty constructor (e.g. the launcher activity), that activity's
+class parameters need to be wrap in an `Option` type to avoid potential  Null Pointer Exception.
+
+### Todo
 * Support fragment 
