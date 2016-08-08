@@ -80,7 +80,7 @@ The generated apply method in the companion object will be invisible to Intellij
 marked as an error although it will still compile successfully. To fix this, install the 
 **Metadroid plugin** to get proper highlighting.
 
-1) _(Coming soon)_ Search and Install the plugin from JetBrains plugin repository. 
+1) Search and Install the plugin from IntelliJ. (settings > plugins > browse repos > search for "Metadroid plugin" > install and restart) 
 
   --**OR**--
 
